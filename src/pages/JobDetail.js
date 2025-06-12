@@ -1,16 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-import axios from "../api";
-import TimeTracker from "../components/TimeTracker";
-import AttachmentsUploader from "../components/AttachmentsUploader";
-import ExpenseForm from "../components/ExpenseForm";
+import { useParams, Link } from "react-router-dom";
+import { getJob } from "../api";
 
 export default function JobDetail() {
   const { id } = useParams();
   const [job, setJob] = useState(null);
 
   useEffect(() => {
-    axios.get(`/jobs/${id}`).then(res => setJob(res.data));
+    getJob(id).then(setJob);
   }, [id]);
 
   if (!job) return <div>Loading...</div>;
@@ -19,12 +16,7 @@ export default function JobDetail() {
     <div>
       <h2>{job.title}</h2>
       <p>Status: {job.status}</p>
-      <p>Description: {job.description}</p>
-      <p>Client: {job.client_name}</p>
-      <TimeTracker jobId={job.id} />
-      <AttachmentsUploader jobId={job.id} />
-      <ExpenseForm jobId={job.id} />
-      {/* More job info here */}
+      <Link to="/jobs">Back to Jobs</Link>
     </div>
   );
 }
